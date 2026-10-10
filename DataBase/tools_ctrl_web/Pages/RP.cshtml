@@ -1,0 +1,187 @@
+﻿@page
+@model tools_ctrl_web.Pages.RPModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>申请维修</title>
+    <style>
+            body {
+                font-family: 微软雅黑;
+                background: #f0f2f5;
+                margin: 0;
+            }
+
+            .top {
+                background: #001529;
+                color: white;
+                padding: 15px 30px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+                .top a {
+                    color: white;
+                    text-decoration: none;
+                }
+
+            .container {
+                display: flex;
+                padding: 20px;
+                gap: 20px;
+            }
+
+            .left {
+                flex: 1;
+                background: white;
+                border-radius: 10px;
+                padding: 15px;
+            }
+
+            .right {
+                flex: 1;
+                background: white;
+                border-radius: 10px;
+                padding: 25px;
+            }
+
+            label {
+                display: block;
+                margin-top: 12px;
+                font-size: 14px;
+                color: #333;
+            }
+
+            input, select, textarea {
+                width: 100%;
+                padding: 8px;
+                margin-top: 5px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                box-sizing: border-box;
+            }
+
+            button {
+                width: 100%;
+                padding: 12px;
+                background: #fa8c16;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 16px;
+                margin-top: 20px;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 13px;
+                margin-top: 10px;
+            }
+
+            th, td {
+                padding: 6px;
+                border: 1px solid #eee;
+                text-align: left;
+            }
+
+            th {
+                background: #fafafa;
+            }
+
+            .msg {
+                color: green;
+                text-align: center;
+                margin-top: 15px;
+            }
+
+            .err {
+                color: red;
+                text-align: center;
+                margin-top: 15px;
+            }
+
+            .row {
+                display: flex;
+                gap: 8px;
+            }
+    </style>
+</head>
+<body>
+    <div class="top">
+        <div>申请维修</div>
+        <div><a href="/Index">返回首页</a></div>
+    </div>
+
+    <div class="container">
+        <div class="left">
+            <h3>当前维修中的工器具</h3>
+            <table>
+                <tr><th>工器具编号</th><th>名称</th><th>类别</th><th>资产状态</th></tr>
+                @foreach (System.Data.DataRow row in Model.RepairingTools.Rows)
+                {
+                    <tr>
+                        <td>@row["工器具编号"]</td>
+                        <td>@row["名称"]</td>
+                        <td>@row["类别"]</td>
+                        <td>@row["资产状态"]</td>
+                    </tr>
+                }
+            </table>
+        </div>
+
+        <div class="right">
+            <h3>维修操作</h3>
+            <form method="post">
+                <label>操作类型</label>
+                <select name="Action" id="action" onchange="toggleFields()">
+                    <option value="申请维修">申请维修</option>
+                    <option value="维修完成">维修完成</option>
+                </select>
+
+                <label>工具编号</label>
+                <input type="text" name="ToolId" required />
+
+                <label>申请人编号</label>
+                <input type="text" name="Applicant" required />
+
+                <div id="applyFields">
+                    <label>维修日期</label>
+                    <div class="row">
+                        <input type="text" name="Year" placeholder="年" />
+                        <input type="text" name="Month" placeholder="月" />
+                        <input type="text" name="Day" placeholder="日" />
+                    </div>
+
+                    <label>情况概述</label>
+                    <textarea name="Description" rows="3"></textarea>
+                </div>
+
+                <button type="submit">提交</button>
+            </form>
+
+            @if (!string.IsNullOrEmpty(Model.Message))
+            {
+                <div class="msg">@Model.Message</div>
+            }
+            @if (!string.IsNullOrEmpty(Model.Error))
+            {
+                <div class="err">@Model.Error</div>
+            }
+        </div>
+    </div>
+
+    <script>
+            function toggleFields() {
+                var action = document.getElementById("action").value;
+                var fields = document.getElementById("applyFields");
+                fields.style.display = (action == "维修完成") ? "none" : "block";
+            }
+    </script>
+</body>
+</html>

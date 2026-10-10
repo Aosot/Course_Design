@@ -1,0 +1,58 @@
+﻿@page
+@model tools_ctrl_web.Pages.SCModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>申报报废</title>
+    <style>
+        body { font-family: 微软雅黑; background: #f0f2f5; margin: 0; }
+        .top { background: #001529; color: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; }
+        .top a { color: white; text-decoration: none; }
+        .box { background: white; max-width: 520px; margin: 40px auto; padding: 30px; border-radius: 10px; }
+        label { display: block; margin-top: 12px; font-size: 14px; color: #333; }
+        input { width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background: #ff4d4f; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin-top: 20px; }
+        .msg { color: green; text-align: center; margin-top: 15px; }
+        .err { color: red; text-align: center; margin-top: 15px; }
+        .row { display: flex; gap: 8px; }
+    </style>
+</head>
+<body>
+    <div class="top">
+        <div>申报报废</div>
+        <div><a href="/Index">返回首页</a></div>
+    </div>
+
+    <div class="box">
+        <form method="post">
+            <label>工器具编号</label>
+            <input type="text" name="ToolId" required />
+
+            <label>申报人编号</label>
+            <input type="text" name="Applicant" required />
+
+            <label>报废日期</label>
+            <div class="row">
+                <input type="text" name="Year" placeholder="年" required />
+                <input type="text" name="Month" placeholder="月" required />
+                <input type="text" name="Day" placeholder="日" required />
+            </div>
+
+            <button type="submit">确认申报</button>
+        </form>
+
+        @if (!string.IsNullOrEmpty(Model.Message))
+        {
+            <div class="msg">@Model.Message</div>
+        }
+        @if (!string.IsNullOrEmpty(Model.Error))
+        {
+            <div class="err">@Model.Error</div>
+        }
+    </div>
+</body>
+</html>
